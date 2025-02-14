@@ -1,0 +1,217 @@
+-- Create the ai_job_market table
+CREATE TABLE ai_job_market (
+    job_title VARCHAR(50),
+    industry VARCHAR(30),
+    company_size VARCHAR(20),
+    location VARCHAR(20),
+    ai_adoption_level VARCHAR(20),
+    automation_risk VARCHAR(20),
+    required_skills VARCHAR(30),
+    salary_usd FLOAT,
+    remote_friendly VARCHAR(10),
+    job_growth_projection VARCHAR(20)
+);
+
+-- Basic SQL Questions
+
+-- List all unique job titles in the dataset
+SELECT DISTINCT job_title 
+FROM ai_job_market;
+
+-- Find all jobs located in "San Francisco"
+SELECT DISTINCT a.job_title 
+FROM ai_job_market a
+WHERE a.location = 'San Francisco';
+
+-- Retrieve the job titles and salaries for jobs that are remote-friendly
+SELECT job_title, salary_usd 
+FROM ai_job_market
+WHERE remote_friendly = 'Yes';
+
+-- Find the average salary for all jobs in the dataset
+SELECT job_title, AVG(salary_usd) AS avg_salary 
+FROM ai_job_market
+GROUP BY job_title
+ORDER BY avg_salary;
+
+-- List all jobs in the "Technology" industry
+SELECT DISTINCT job_title 
+FROM ai_job_market
+WHERE industry = 'Technology';
+
+---------------------------------------------------------------------------------------------------------------------
+-- Intermediate SQL Questions
+
+-- Find the top 5 highest-paying jobs in the dataset
+SELECT job_title, SUM(salary_usd) AS total_salary 
+FROM ai_job_market
+GROUP BY job_title
+ORDER BY total_salary DESC
+LIMIT 5;
+
+-- Count the number of jobs in each industry
+SELECT industry, COUNT(job_title) AS job_count 
+FROM ai_job_market
+GROUP BY industry
+ORDER BY job_count DESC;
+
+-- Find the job titles and locations where the AI adoption level is "High"
+SELECT job_title, location 
+FROM ai_job_market
+WHERE ai_adoption_level = 'High';
+
+-- Retrieve the job titles and salaries for jobs with a "Growth" job growth projection
+SELECT job_title, salary_usd 
+FROM ai_job_market
+WHERE job_growth_projection = 'Growth';
+
+-- Find the average salary for jobs in each location
+SELECT location, job_title, AVG(salary_usd) AS avg_salary 
+FROM ai_job_market
+GROUP BY location, job_title
+ORDER BY location, avg_salary;
+
+
+----------------------------------------------------------------------------------------------------------------
+
+-- Advanced SQL Questions
+
+-- Find the job titles and industries where the automation risk is "High" 
+-- and the salary is above $100,000
+SELECT job_title, industry 
+FROM ai_job_market
+WHERE automation_risk = 'High' 
+  AND salary_usd > 100000;
+
+-- Count the number of remote-friendly jobs in each industry
+SELECT industry, COUNT(job_title) AS remote_job_count 
+FROM ai_job_market
+WHERE remote_friendly = 'Yes'
+GROUP BY industry;
+
+-- Find the job titles and locations where the required skill is "Python" 
+-- and the AI adoption level is "Medium"
+SELECT job_title, location 
+FROM ai_job_market
+WHERE required_skills = 'Python' 
+  AND ai_adoption_level = 'Medium';
+
+-- Retrieve the job titles and salaries for jobs in "Large" companies 
+-- with a "Stable" job growth projection
+SELECT job_title, salary_usd 
+FROM ai_job_market
+WHERE company_size = 'Large' 
+  AND job_growth_projection = 'Stable';
+
+-- Find the top 3 industries with the highest average salary
+SELECT industry, AVG(salary_usd) AS avg_salary 
+FROM ai_job_market
+GROUP BY industry
+ORDER BY avg_salary DESC
+LIMIT 3;
+
+---------------------------------------------------------------------------------------------------------------
+-- Aggregation and Grouping Questions
+
+-- Calculate the total number of jobs in each location
+SELECT location, COUNT(job_title) AS total_jobs 
+FROM ai_job_market
+GROUP BY location;
+
+-- Find the industry with the highest number of job listings
+SELECT industry, COUNT(job_title) AS job_count 
+FROM ai_job_market
+GROUP BY industry
+ORDER BY job_count DESC;
+
+-- Calculate the average salary for jobs in each industry
+SELECT industry, job_title, AVG(salary_usd) AS avg_salary 
+FROM ai_job_market 
+GROUP BY industry, job_title
+ORDER BY industry, avg_salary DESC;
+
+-- Find the location with the highest average salary
+SELECT location, AVG(salary_usd) AS avg_salary 
+FROM ai_job_market
+GROUP BY location
+ORDER BY avg_salary DESC
+LIMIT 1;
+
+-- Count the number of jobs with a "Decline" job growth projection in each industry
+SELECT industry, COUNT(*) AS decline_jobs 
+FROM ai_job_market
+WHERE job_growth_projection = 'Decline'
+GROUP BY industry
+ORDER BY decline_jobs DESC;
+
+-----------------------------------------------------------------------------------------------------------------
+-- Filtering and Sorting Questions
+
+-- List all jobs in "Finance" with a salary greater than $90,000
+SELECT DISTINCT job_title 
+FROM ai_job_market
+WHERE industry = 'Finance' 
+  AND salary_usd > 90000;
+
+-- Find the job titles and locations where the required skill is "Machine Learning" 
+-- and the company size is "Small"
+SELECT job_title, location 
+FROM ai_job_market 
+WHERE required_skills = 'Machine Learning' 
+  AND company_size = 'Small';
+
+-- Retrieve the job titles and salaries for jobs in "Berlin" with a "Low" automation risk
+SELECT job_title, salary_usd 
+FROM ai_job_market 
+WHERE location = 'Berlin' 
+  AND automation_risk = 'Low';
+
+-- List all jobs in "Healthcare" with a "Growth" job growth projection
+SELECT DISTINCT job_title 
+FROM ai_job_market
+WHERE industry = 'Healthcare' 
+  AND job_growth_projection = 'Growth';
+
+-- Find the job titles and industries where the salary is between $80,000 and $100,000
+SELECT industry, job_title 
+FROM ai_job_market
+WHERE salary_usd BETWEEN 80000 AND 100000
+ORDER BY industry;
+
+-----------------------------------------------------------------------------------------------------------------
+-- Complex Queries
+
+-- Find the job titles and locations where the AI adoption level is "High" 
+-- and the job growth projection is "Growth"
+SELECT job_title, location 
+FROM ai_job_market
+WHERE ai_adoption_level = 'High'
+  AND job_growth_projection = 'Growth';
+
+-- Retrieve the job titles and salaries for jobs in "Large" companies with a "High" automation risk
+SELECT job_title, salary_usd 
+FROM ai_job_market
+WHERE company_size = 'Large' 
+  AND automation_risk = 'High';
+
+-- Find the top 5 locations with the highest number of remote-friendly jobs
+SELECT location, COUNT(*) AS remote_job_count 
+FROM ai_job_market
+WHERE remote_friendly = 'Yes'
+GROUP BY location
+ORDER BY remote_job_count DESC
+LIMIT 5;
+
+-- Calculate the average salary for jobs with a "Growth" projection in each industry
+SELECT industry, AVG(salary_usd) AS avg_salary 
+FROM ai_job_market
+WHERE job_growth_projection = 'Growth'
+GROUP BY industry
+ORDER BY avg_salary DESC;
+
+-- Find the job titles and industries where the required skill is "Cybersecurity" 
+-- and the salary is above the overall average salary
+SELECT job_title, industry 
+FROM ai_job_market
+WHERE required_skills = 'Cybersecurity' 
+  AND salary_usd > (SELECT AVG(salary_usd) FROM ai_job_market);
